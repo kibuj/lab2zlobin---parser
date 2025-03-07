@@ -10,9 +10,15 @@ soup = BeautifulSoup(response.text, "html.parser")
 days = soup.find_all("a", class_="row-item row-item-month-date")
 
 for day in days:
-    date = day.find("div", class_="date").text.strip()  # Дата
-    weather = day.get("data-tooltip", "Невідомо")  # Опис погоди
-    temp_max = day.find("div", class_="maxt").text.strip()  # Макс. температура
-    temp_min = day.find("div", class_="mint").text.strip()  # Мін. температура
+    date = day.find("div", class_="date").text.strip()
+    weather = day.get("data-tooltip", "Невідомо")
+
+    temp_max_tag = day.find("div", class_="maxt")
+    temp_max = temp_max_tag.find("temperature-value")["value"]
+
+    temp_min_tag = day.find("div", class_="mint")
+    temp_min = temp_min_tag.find("temperature-value")["value"]
+
     print(f"Дата: {date}, Погода: {weather}, Температура: {temp_max} / {temp_min}")
+
 
